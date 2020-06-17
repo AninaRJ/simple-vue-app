@@ -15,11 +15,11 @@
 					Following <b-badge variant="info">{{profile.friends_count}}</b-badge>
 				</b-button>
 				<b-button variant="link">
-					Favourites <b-badge variant="info">{{profile.favourites_count}}</b-badge>
+					<b-icon icon="heart-fill" variant="danger"/>&nbsp;<b-badge variant="info">{{profile.favourites_count}}</b-badge>
 				</b-button>
 			</b-list-group-item>
 			<b-list-group-item>
-				<p>User since: {{new Date(profile.created_at).toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' })}}</p>
+				<p><b-icon icon="calendar-3"/>&nbsp;User since: {{new Date(profile.created_at).toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' })}}</p>
 			</b-list-group-item>
 		</b-list-group>
 	</div>

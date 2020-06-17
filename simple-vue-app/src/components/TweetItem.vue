@@ -12,7 +12,27 @@
 			<b-embed v-if="tweetItem.extended_entities != undefined && tweetItem.extended_entities.media != undefined" 
 				type="video" v-bind:src="tweetItem.extended_entities.media[0].video_info.variants[0].url"/>
 		</b-media>
-		<span class="tweet-timestamp">{{tweetItem.created_at}}</span>
+		<!-- RETWEET COUNT -->
+		<b-button variant="link" v-if="tweetItem.retweeted">
+			<b-icon icon="arrow-repeat" variant="success"/>&nbsp;
+			<b-badge variant="success">{{tweetItem.retweet_count}}</b-badge>
+		</b-button>
+		<b-button variant="link" v-else>
+			<b-icon icon="arrow-repeat" variant="primary"/>&nbsp;
+			<b-badge variant="info">{{tweetItem.retweet_count}}</b-badge>
+		</b-button>
+		<!-- FAVOURITE COUNT -->
+		<b-button variant="link" v-if="tweetItem.favourited">
+			<b-icon icon="heart-fill" variant="danger"/>&nbsp;
+			<b-badge variant="info">{{tweetItem.favorite_count}}</b-badge>
+		</b-button>
+		<b-button variant="link" v-else>
+			<b-icon icon="heart" variant="primary"/>&nbsp;
+			<b-badge variant="info">{{tweetItem.favorite_count}}</b-badge>
+		</b-button>
+		<div>
+			<span class="tweet-timestamp">{{new Date(tweetItem.created_at).toLocaleString()}}</span>
+		</div>
 	</b-list-group-item>
 </template>
 
@@ -37,14 +57,16 @@ export default {
 	 float: left;
 	 width: fit-content;
 	 color: cadetblue;
+	 font-weight: bold;
  }
  .tweet-timestamp{
 	 font-size: 12px;
 	 float: left;
 	 width: fit-content;
+	 font-weight: bold;
  }
  .tweet{
-	 font-size: 20px;
+	 font-size: 18px;
 	 text-align: end;
  }
  .hastag{
