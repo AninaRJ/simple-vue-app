@@ -5,10 +5,10 @@
     <b-spinner variant="info" class="text-center loading" v-if="!profile.hasOwnProperty('id')" label="Loading..."></b-spinner>
     <b-container v-else class="bv-example-row">
       <b-row>
-        <b-col sm="5">
+        <b-col sm="4">
           <Profile v-bind:profile="profile"/>
         </b-col>
-        <b-col sm="7">
+        <b-col sm="8">
           <TweetList v-bind:tweets='tweets'/>
         </b-col>
       </b-row>
@@ -61,7 +61,7 @@ export default {
   created(){
     axios({
       method: 'GET',
-      url: 'https://morning-headland-68889.herokuapp.com/https://api.twitter.com/1.1/search/tweets.json?q=from%3Aaninarj',
+      url: 'https://morning-headland-68889.herokuapp.com/https://api.twitter.com/1.1/search/tweets.json?q=from%3Aaninarj&count=100',
       headers: {
         'Authorization': 'Bearer AAAAAAAAAAAAAAAAAAAAAICpFAEAAAAAMYYy3I%2F%2BFrsZU6SZ12x%2FQuOvfiM%3DciqEC9FnXygv2Xk1ETTyojENsgkGNvrbHp5lJBcCBC5KXTfwWk',
         'Content-Type': 'application/json'
