@@ -2,7 +2,8 @@
   <div id="app">
     <Header/>
     <!-- <TweetTextArea v-on:submit-tweet="submitTweet"/> -->
-    <b-container class="bv-example-row">
+    <b-spinner variant="info" class="text-center loading" v-if="!profile.hasOwnProperty('id')" label="Loading..."></b-spinner>
+    <b-container v-else class="bv-example-row">
       <b-row>
         <b-col sm="5">
           <Profile v-bind:profile="profile"/>
@@ -108,6 +109,11 @@ export default {
 
 button:hover{
   cursor: pointer;
+}
+
+.loading{
+  width: 40px;
+  height: 40px;
 }
 
 </style>
