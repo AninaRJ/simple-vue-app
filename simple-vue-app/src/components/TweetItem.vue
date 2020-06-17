@@ -88,7 +88,7 @@ export default {
  }
  .tweet{
 	 font-size: 18px;
-	 text-align: end;
+	 text-align: start;
  }
  .hastag{
 	 color: blue;
