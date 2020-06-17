@@ -5,13 +5,28 @@
 				<b-col sm="3">
 					<b-media class="tweet-author-img">
 						<template v-slot:aside>
-							<b-img width="64" rounded="circle" v-bind:src="tweetItem.user.profile_image_url"></b-img>
+							<b-img width="64" v-if="tweetItem.text.startsWith('RT')" rounded="circle" v-bind:src="tweetItem.retweeted_status.user.profile_image_url"></b-img>
+							<b-img width="64" v-else rounded="circle" v-bind:src="tweetItem.user.profile_image_url"></b-img>
 						</template>
 					</b-media>
-					<div class="tweet-author">@{{tweetItem.user.screen_name}}</div>
+					<div class="tweet-author" v-if="tweetItem.text.startsWith('RT')">@{{tweetItem.retweeted_status.user.screen_name}}</div>
+					<div class="tweet-author" v-else>@{{tweetItem.user.screen_name}}</div>
 				</b-col>
 				<b-col sm="9">
-					<div class="tweet">{{tweetItem.text}}</div>
+					<div class="tweet" v-if="tweetItem.text.startsWith('RT')">
+						{{tweetItem.text.substring(tweetItem.text.indexOf(':') + 1)}}
+					</div>
+					<div class="tweet" v-else-if="tweetItem.text.startsWith('@')">
+						<span v-for="(user, index) in tweetItem.entities.user_mentions" v-bind:key="user">
+							<b-link>@{{user.screen_name}}</b-link>
+							<span v-if="index < (tweetItem.entities.user_mentions.length -1)">&nbsp;</span>
+						</span>
+						{{tweetItem.text.split(tweetItem.entities.user_mentions[tweetItem.entities.user_mentions.length-1].screen_name)[1]}}
+					</div>
+					<div class="tweet" v-else>
+						{{tweetItem.text}}
+					</div>
+					<b-link class="tweet-timestamp" v-if="tweetItem.text.startsWith('RT')">Retweeted by @{{tweetItem.user.screen_name}}</b-link>
 				</b-col>
 			</b-row>
 		</b-container>
