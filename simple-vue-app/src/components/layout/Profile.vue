@@ -35,10 +35,8 @@ export default {
 <style scoped>
 	.profile-section{
 		align-items: center;
-		width: 40%;
-		float: right;
 		text-align: center;
-		margin: 37px;
+		margin: auto;
 	}
 
 	.profile-section > .list-group > .list-group-item{

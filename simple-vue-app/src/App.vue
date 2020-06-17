@@ -2,8 +2,16 @@
   <div id="app">
     <Header/>
     <!-- <TweetTextArea v-on:submit-tweet="submitTweet"/> -->
-    <Profile v-bind:profile="profile"/>
-    <TweetList v-bind:tweets='tweets'/>
+    <b-container class="bv-example-row">
+      <b-row>
+        <b-col sm="5">
+          <Profile v-bind:profile="profile"/>
+        </b-col>
+        <b-col sm="7">
+          <TweetList v-bind:tweets='tweets'/>
+        </b-col>
+      </b-row>
+    </b-container>
   </div>
 </template>
 

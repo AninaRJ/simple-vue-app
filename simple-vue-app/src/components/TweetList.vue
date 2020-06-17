@@ -22,8 +22,7 @@ export default {
 .tweet-list{
 	text-align: center;
 	align-items: center;
-	width: 50%;
-	float: right;
+	margin: auto;
 }
 
 .tweet-list h4{
