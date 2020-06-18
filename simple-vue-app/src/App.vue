@@ -10,6 +10,12 @@
         Search for a user to see their tweets!
       </b-alert>
     </b-container>
+     <b-container v-else-if="this.error_msg != ''">
+      <b-alert show variant="danger">
+        <b-icon icon="info-circle-fill" variant="danger"/>
+        {{this.error_msg}}
+      </b-alert>
+    </b-container>
     <b-container v-else class="bv-example-row">
       <b-row>
         <b-col sm="12">
@@ -17,10 +23,10 @@
         </b-col>
       </b-row>
       <b-row>
-        <b-col sm="4">
+        <b-col sm="4" class="mb-4">
           <Profile v-bind:profile="profile" v-bind:media="media"/>
         </b-col>
-        <b-col sm="8">
+        <b-col sm="8" class="mb-4">
           <TweetList v-bind:tweets='tweets'/>
         </b-col>
       </b-row>
@@ -53,7 +59,8 @@ export default {
       tweets: [],
       profile: {},
       media: [],
-      search_user: ""
+      search_user: "",
+      error_msg: ""
     };
   },
   methods:{
@@ -76,6 +83,7 @@ export default {
 
       axios({
           method: 'GET',
+          timeout: 1000 * 5, 
           url: 'https://morning-headland-68889.herokuapp.com/https://api.twitter.com/1.1/search/tweets.json?q=from%3A' + this.search_user + '&count=100',
           headers: {
             'Authorization': 'Bearer AAAAAAAAAAAAAAAAAAAAAICpFAEAAAAAMYYy3I%2F%2BFrsZU6SZ12x%2FQuOvfiM%3DciqEC9FnXygv2Xk1ETTyojENsgkGNvrbHp5lJBcCBC5KXTfwWk',
@@ -85,9 +93,14 @@ export default {
           .then(res => {
               this.tweets=res.data.statuses; 
               this.profile = res.data.statuses[0].user;
-              this.media = [];
+              this.media = (res.data.statuses[0].entities[0] != undefined)? res.data.statuses[0].entities[0].media: [];
           })
-          .catch(err => console.log(err));
+          .catch(err => {
+            console.log(err);
+            this.tweets = [];
+            this.profile = {};
+            this.error_msg = err.msg; 
+          });
     }
   },
   created(){
@@ -98,14 +111,20 @@ export default {
         headers: {
           'Authorization': 'Bearer AAAAAAAAAAAAAAAAAAAAAICpFAEAAAAAMYYy3I%2F%2BFrsZU6SZ12x%2FQuOvfiM%3DciqEC9FnXygv2Xk1ETTyojENsgkGNvrbHp5lJBcCBC5KXTfwWk',
           'Content-Type': 'application/json'
-        }
+        },
+        timeout: 60 * 1000
       })
         .then(res => {
             this.tweets=res.data.statuses; 
             this.profile = res.data.statuses[0].user;
             this.media = [];
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+          console.log(err);
+          this.tweets = [];
+          this.profile = {};
+          this.error_msg = err.msg; 
+        });
     }
   }
 }
@@ -118,6 +137,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  height: 100%;
 }
 
 .lightBg{
