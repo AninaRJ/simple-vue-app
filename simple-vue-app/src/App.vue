@@ -6,7 +6,7 @@
     <b-container v-else class="bv-example-row">
       <b-row>
         <b-col sm="4">
-          <Profile v-bind:profile="profile"/>
+          <Profile v-bind:profile="profile" v-bind:media="media"/>
         </b-col>
         <b-col sm="8">
           <TweetList v-bind:tweets='tweets'/>
@@ -39,7 +39,8 @@ export default {
   data(){
     return{
       tweets: [],
-      profile: {}
+      profile: {},
+      media: []
     };
   },
   methods:{
@@ -67,7 +68,11 @@ export default {
         'Content-Type': 'application/json'
       }
     })
-      .then(res => {this.tweets=res.data.statuses; this.profile = res.data.statuses[0].user;})
+      .then(res => {
+          this.tweets=res.data.statuses; 
+          this.profile = res.data.statuses[0].user;
+          this.media = [];
+      })
       .catch(err => console.log(err));
   }
 }

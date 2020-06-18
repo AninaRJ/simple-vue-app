@@ -1,5 +1,6 @@
 <template>
 	<b-list-group-item>
+		<!-- Text and dp content -->
 		<b-container>
 			<b-row>
 				<b-col sm="3">
@@ -7,6 +8,8 @@
 						<template v-slot:aside>
 							<b-img width="64" v-if="tweetItem.text.startsWith('RT')" rounded="circle" v-bind:src="tweetItem.retweeted_status.user.profile_image_url"></b-img>
 							<b-img width="64" v-else rounded="circle" v-bind:src="tweetItem.user.profile_image_url"></b-img>
+
+							<b-icon icon="chat-square-quote-fill" v-if="quoteTweet" variant="info"/>
 						</template>
 					</b-media>
 					<div class="tweet-author" v-if="tweetItem.text.startsWith('RT')">@{{tweetItem.retweeted_status.user.screen_name}}</div>
@@ -31,12 +34,19 @@
 			</b-row>
 		</b-container>
 		<b-container>
+			<div v-if="quoteTweet">
+				<TweetItem v-bind:tweetItem="quoteTweet"/>
+			</div>
+		</b-container>
+		<!-- Video and embedded tweets -->
+		<b-container>
 			<b-media>
 				<b-embed type="embed" v-if="tweetItem.entities.urls != undefined && tweetItem.entities.urls[0] != undefined" v-bind:src="tweetItem.entities.urls[0].url"/>
 				<b-embed v-if="tweetItem.extended_entities != undefined && tweetItem.extended_entities.media != undefined" 
 					type="embed" v-bind:src="tweetItem.extended_entities.media[0].video_info.variants[0].url"/>
 			</b-media>
 		</b-container>
+		<!-- statistics content -->
 		<b-container>
 			<b-row align-content="center">
 				<b-col align-self="center">
@@ -75,7 +85,7 @@
 import TweetAction from './TweetAction.vue';
 export default {
 	name: 'TweetItem',
-	props: ['tweetItem'],
+	props: ['tweetItem', 'quoteTweet'],
 	components:{
 		TweetAction
 	}
