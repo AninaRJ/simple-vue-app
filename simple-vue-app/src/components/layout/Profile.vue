@@ -22,17 +22,17 @@
 				<b-icon icon="calendar-3"/>&nbsp;User since: {{new Date(profile.created_at).toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' })}}
 			</b-list-group-item>
 		</b-list-group>
-		<b-carousel id="carousel-1" v-model="slide" :interval="4000" controls indicators background="#ababab" img-width="1024" img-height="480" style="text-shadow: 1px 1px 2px #333;"
+		<!-- <b-carousel id="carousel-1" v-model="slide" :interval="4000" controls indicators background="#ababab" img-width="1024" img-height="480" style="text-shadow: 1px 1px 2px #333;"
 			@sliding-start="onSlideStart"
 			@sliding-end="onSlideEnd"
-			v-for="mediaItem in media">
+			v-for="mediaItem in media" v-bind:key="mediaItem">
 			<b-carousel-slide
 				caption="First slide"
 				text="Nulla vitae elit libero, a pharetra augue mollis interdum."
 				img-src="mediaItem.media_url_https"
       		>
 			</b-carousel-slide>
-    	</b-carousel>
+    	</b-carousel> -->
 	</div>
 </template>
 

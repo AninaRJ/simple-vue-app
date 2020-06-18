@@ -93,7 +93,6 @@ export default {
           .then(res => {
               this.tweets=res.data.statuses; 
               this.profile = res.data.statuses[0].user;
-              this.media = (res.data.statuses[0].entities[0] != undefined)? res.data.statuses[0].entities[0].media: [];
           })
           .catch(err => {
             console.log(err);

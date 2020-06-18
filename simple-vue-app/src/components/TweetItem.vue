@@ -52,9 +52,13 @@
 		<!-- Video and embedded tweets -->
 		<b-container>
 			<b-media>
-				<b-embed type="embed" v-if="tweetItem.entities.urls != undefined && tweetItem.entities.urls[0] != undefined && !quoteTweet" v-bind:src="tweetItem.entities.urls[0].url"/>
+				<b-embed allowfullscreen aspect="21by9" type="video" v-if="tweetItem.entities.urls != undefined && tweetItem.entities.urls[0] != undefined && !quoteTweet" 
+					v-bind:src="tweetItem.entities.urls[0].expanded_url"/>
 				<b-embed v-if="tweetItem.extended_entities != undefined && tweetItem.extended_entities.media != undefined && !quoteTweet"
-					type="embed" v-bind:src="tweetItem.extended_entities.media[0].video_info.variants[0].url"/>
+					type="video">
+					<source v-bind:src="tweetItem.extended_entities.media[0].video_info.variants[0].url" 
+						v-bind:type="tweetItem.extended_entities.media[0].video_info.variants[0].content_type">
+				</b-embed>
 			</b-media>
 		</b-container>
 		<!-- statistics content -->
