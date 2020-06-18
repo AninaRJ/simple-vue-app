@@ -1,7 +1,7 @@
 <template>
 	<div class="profile-section">
 		<b-list-group>
-			<b-list-group-item>
+			<b-list-group-item variant="warning">
 				<b-img rounded="circle" width="84px" v-bind:src="profile.profile_image_url_https"/>
 				<h4>{{profile.name}}</h4>
 				<h5><b-link>@{{profile.screen_name}}</b-link></h5>
@@ -18,7 +18,7 @@
 					<b-icon icon="heart-fill" variant="danger"/>&nbsp;<b-badge variant="info">{{profile.favourites_count}}</b-badge>
 				</b-button>
 			</b-list-group-item>
-			<b-list-group-item>
+			<b-list-group-item variant="warning"> 
 				<p><b-icon icon="calendar-3"/>&nbsp;User since: {{new Date(profile.created_at).toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' })}}</p>
 			</b-list-group-item>
 		</b-list-group>

@@ -1,9 +1,18 @@
 <template>
   <div id="app">
-    <Header/>
+    <Header v-on:submit-search="submitSearch"/>
     <!-- <TweetTextArea v-on:submit-tweet="submitTweet"/> -->
-    <b-spinner variant="info" class="text-center loading" v-if="!profile.hasOwnProperty('id')" label="Loading..."></b-spinner>
+    <br/>
+    <b-spinner variant="warning" class="text-center loading" v-if="!profile.hasOwnProperty('id') && this.search_user != ''" label="Loading..."></b-spinner>
+    <b-container v-else-if="this.search_user == ''">
+      <b-alert show variant="danger">Search for a user to see their tweets!</b-alert>
+    </b-container>
     <b-container v-else class="bv-example-row">
+      <b-row>
+        <b-col sm="12">
+          <b-alert dismissible show variant="success">Showing results for @{{this.search_user}}</b-alert>
+        </b-col>
+      </b-row>
       <b-row>
         <b-col sm="4">
           <Profile v-bind:profile="profile" v-bind:media="media"/>
@@ -40,7 +49,8 @@ export default {
     return{
       tweets: [],
       profile: {},
-      media: []
+      media: [],
+      search_user: ""
     };
   },
   methods:{
@@ -57,23 +67,43 @@ export default {
         this.tweets.push(tweet);
         document.getElementById('tweet').value = "";
       }
+    },
+    submitSearch(){
+      this.search_user = document.getElementById("search-user").value;
+
+      axios({
+          method: 'GET',
+          url: 'https://morning-headland-68889.herokuapp.com/https://api.twitter.com/1.1/search/tweets.json?q=from%3A' + this.search_user + '&count=100',
+          headers: {
+            'Authorization': 'Bearer AAAAAAAAAAAAAAAAAAAAAICpFAEAAAAAMYYy3I%2F%2BFrsZU6SZ12x%2FQuOvfiM%3DciqEC9FnXygv2Xk1ETTyojENsgkGNvrbHp5lJBcCBC5KXTfwWk',
+            'Content-Type': 'application/json'
+          }
+        })
+          .then(res => {
+              this.tweets=res.data.statuses; 
+              this.profile = res.data.statuses[0].user;
+              this.media = [];
+          })
+          .catch(err => console.log(err));
     }
   },
   created(){
-    axios({
-      method: 'GET',
-      url: 'https://morning-headland-68889.herokuapp.com/https://api.twitter.com/1.1/search/tweets.json?q=from%3Aaninarj&count=100',
-      headers: {
-        'Authorization': 'Bearer AAAAAAAAAAAAAAAAAAAAAICpFAEAAAAAMYYy3I%2F%2BFrsZU6SZ12x%2FQuOvfiM%3DciqEC9FnXygv2Xk1ETTyojENsgkGNvrbHp5lJBcCBC5KXTfwWk',
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(res => {
-          this.tweets=res.data.statuses; 
-          this.profile = res.data.statuses[0].user;
-          this.media = [];
+    if(this.search_user != ""){
+      axios({
+        method: 'GET',
+        url: 'https://morning-headland-68889.herokuapp.com/https://api.twitter.com/1.1/search/tweets.json?q=from%3A' + this.search_user + '&count=100',
+        headers: {
+          'Authorization': 'Bearer AAAAAAAAAAAAAAAAAAAAAICpFAEAAAAAMYYy3I%2F%2BFrsZU6SZ12x%2FQuOvfiM%3DciqEC9FnXygv2Xk1ETTyojENsgkGNvrbHp5lJBcCBC5KXTfwWk',
+          'Content-Type': 'application/json'
+        }
       })
-      .catch(err => console.log(err));
+        .then(res => {
+            this.tweets=res.data.statuses; 
+            this.profile = res.data.statuses[0].user;
+            this.media = [];
+        })
+        .catch(err => console.log(err));
+    }
   }
 }
 </script>
@@ -85,7 +115,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 
 .lightBg{

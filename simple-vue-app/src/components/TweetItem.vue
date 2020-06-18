@@ -1,5 +1,5 @@
 <template>
-	<b-list-group-item>
+	<b-list-group-item class="flex-column align-items-start">
 		<!-- Text and dp content -->
 		<b-container>
 			<b-row>
@@ -12,19 +12,30 @@
 							<b-icon icon="chat-square-quote-fill" v-if="quoteTweet" variant="info"/>
 						</template>
 					</b-media>
-					<div class="tweet-author" v-if="tweetItem.text.startsWith('RT')">@{{tweetItem.retweeted_status.user.screen_name}}</div>
-					<div class="tweet-author" v-else>@{{tweetItem.user.screen_name}}</div>
+					<small class="tweet-author" v-if="tweetItem.text.startsWith('RT')">@{{tweetItem.retweeted_status.user.screen_name}}</small>
+					<small class="tweet-author" v-else>@{{tweetItem.user.screen_name}}</small>
 				</b-col>
 				<b-col sm="9">
 					<div class="tweet" v-if="tweetItem.text.startsWith('RT')">
 						{{tweetItem.text.substring(tweetItem.text.indexOf(':') + 1)}}
 					</div>
 					<div class="tweet" v-else-if="tweetItem.text.startsWith('@')">
-						<span v-for="(user, index) in tweetItem.entities.user_mentions" v-bind:key="user">
-							<b-link>@{{user.screen_name}}</b-link>
-							<span v-if="index < (tweetItem.entities.user_mentions.length -1)">&nbsp;</span>
+						<span v-for="user in tweetItem.entities.user_mentions" v-bind:key="user">
+							<b-button pill variant="warning" v-if="tweetItem.in_reply_to_screen_name == user.screen_name" size="sm" class="mb-2">
+								<b-icon icon="reply-fill" flip-h aria-hidden="true"></b-icon>@{{user.screen_name}}
+							</b-button>
 						</span>
-						{{tweetItem.text.split(tweetItem.entities.user_mentions[tweetItem.entities.user_mentions.length-1].screen_name)[1]}}
+						<span v-for="(user, index) in tweetItem.entities.user_mentions" v-bind:key="user">
+							<b-button pill variant="dark" v-if="tweetItem.in_reply_to_screen_name != user.screen_name && index == 1" size="sm" class="ml-1 mb-2">
+								cc: @{{user.screen_name}}
+								<b-badge variant="light" v-if="tweetItem.entities.user_mentions.length > 2">
+									&nbsp;+ {{tweetItem.entities.user_mentions.length -2}}
+								</b-badge>
+							</b-button>
+						</span>
+						<div>
+							{{tweetItem.text.split(tweetItem.entities.user_mentions[tweetItem.entities.user_mentions.length-1].screen_name)[1]}}
+						</div>
 					</div>
 					<div class="tweet" v-else>
 						{{tweetItem.text}}
@@ -41,8 +52,8 @@
 		<!-- Video and embedded tweets -->
 		<b-container>
 			<b-media>
-				<b-embed type="embed" v-if="tweetItem.entities.urls != undefined && tweetItem.entities.urls[0] != undefined" v-bind:src="tweetItem.entities.urls[0].url"/>
-				<b-embed v-if="tweetItem.extended_entities != undefined && tweetItem.extended_entities.media != undefined" 
+				<b-embed type="embed" v-if="tweetItem.entities.urls != undefined && tweetItem.entities.urls[0] != undefined && !quoteTweet" v-bind:src="tweetItem.entities.urls[0].url"/>
+				<b-embed v-if="tweetItem.extended_entities != undefined && tweetItem.extended_entities.media != undefined && !quoteTweet"
 					type="embed" v-bind:src="tweetItem.extended_entities.media[0].video_info.variants[0].url"/>
 			</b-media>
 		</b-container>
@@ -88,7 +99,7 @@ export default {
 	props: ['tweetItem', 'quoteTweet'],
 	components:{
 		TweetAction
-	}
+	},
 }
 </script>
 

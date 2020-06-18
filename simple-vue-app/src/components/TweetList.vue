@@ -1,6 +1,5 @@
 <template>
 	<div class="tweet-list">
-		<h4>Latest Tweets</h4>
 		<b-list-group v-for="tweetItem in tweets" v-bind:key="tweetItem.id">
 			<TweetItem v-bind:tweetItem="tweetItem" v-if="tweetItem.is_quote_status" v-bind:quoteTweet="tweetItem.quoted_status"/>
 			<TweetItem v-bind:tweetItem="tweetItem" v-else/>
