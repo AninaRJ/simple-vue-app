@@ -5,7 +5,10 @@
     <br/>
     <b-spinner variant="warning" class="text-center loading" v-if="!profile.hasOwnProperty('id') && this.search_user != ''" label="Loading..."></b-spinner>
     <b-container v-else-if="this.search_user == ''">
-      <b-alert show variant="danger">Search for a user to see their tweets!</b-alert>
+      <b-alert show variant="info">
+        <b-icon icon="info-circle-fill" variant="info"/>
+        Search for a user to see their tweets!
+      </b-alert>
     </b-container>
     <b-container v-else class="bv-example-row">
       <b-row>
